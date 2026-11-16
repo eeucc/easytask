@@ -1,1 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complaint Intake Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              850: '#151e2e',
+              950: '#0a0f1a',
+            }
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans antialiased">
 
+  <main class="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+    <!-- Header -->
+    <div class="px-6 py-5 border-b border-slate-800 bg-slate-900/70 flex items-center justify-between">
+      <div>
+        <h1 class="text-lg font-semibold text-white tracking-tight">Temporary Easy Task Form</h1>
+        <p class="text-xs text-slate-400 mt-0.5">All fields (<span class="text-rose-400">*</span>) are mandatory before copying</p>
+      </div>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+        Form Intake Tool
+      </span>
+    </div>
+
+    <!-- Form Body -->
+    <form id="complaintForm" class="p-6 space-y-4" novalidate>
+      <!-- Name -->
+      <div>
+        <label for="nameInput" class="block text-sm font-medium text-slate-300 mb-1.5">
+          Name: <span class="text-rose-400">*</span>
+        </label>
+        <input
+          type="text"
+          id="nameInput"
+          required
+          placeholder="Enter full name"
+          autocomplete="off"
+          class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition"
+        />
+        <p id="nameError" class="hidden text-xs text-rose-400 mt-1">Name is mandatory.</p>
+      </div>
+
+      <!-- Address -->
+      <div>
+        <label for="addressInput" class="block text-sm font-medium text-slate-300 mb-1.5">
+          Address: <span class="text-rose-400">*</span>
+        </label>
+        <input
+          type="text"
+          id="addressInput"
+          required
+          placeholder="Enter street, sub-city, or location"
+          autocomplete="off"
+          class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition"
+        />
+        <p id="addressError" class="hidden text-xs text-rose-400 mt-1">Address is mandatory.</p>
+      </div>
+
+      <!-- Phone -->
+      <div>
+        <label for="phoneInput" class="block text-sm font-medium text-slate-300 mb-1.5">
+          Phone: <span class="text-rose-400">*</span>
+        </label>
+        <input
+          type="tel"
+          id="phoneInput"
+          required
+          placeholder="Enter phone number"
+          autocomplete="off"
+          class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition"
+        />
+        <p id="phoneError" class="hidden text-xs text-rose-400 mt-1">Phone is mandatory.</p>
+      </div>
+
+      <!-- Complain -->
+      <div>
+        <label for="complainInput" class="block text-sm font-medium text-slate-300 mb-1.5">
+          Complain: <span class="text-rose-400">*</span>
+        </label>
+        <textarea
+          id="complainInput"
+          rows="4"
+          required
+          placeholder="Describe the issue or complaint details..."
+          class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition resize-y"
+        ></textarea>
+        <p id="complainError" class="hidden text-xs text-rose-400 mt-1">Complain is mandatory.</p>
+      </div>
+
+      <!-- Live Clipboard Preview -->
+      <div class="pt-2">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Clipboard Output Preview</span>
+          <span id="statusBadge" class="text-xs text-amber-400 font-medium">Incomplete</span>
+        </div>
+        <pre
+          id="previewBox"
+          class="w-full p-3.5 bg-slate-950/90 border border-slate-800/80 rounded-lg text-xs text-slate-300 font-mono whitespace-pre-wrap break-words leading-relaxed select-none"
+        >Name: 
+Address: 
+Phone: 
+Complain: </pre>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-2 flex items-center gap-3">
+        <button
+          type="button"
+          id="copyBtn"
+          class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow-lg shadow-indigo-600/20 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+        >
+          <svg id="copyIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <svg id="checkIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span id="copyBtnText">Copy</span>
+        </button>
+
+        <button
+          type="button"
+          id="clearBtn"
+          class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 active:bg-slate-850 text-slate-300 text-sm font-medium rounded-lg border border-slate-700 transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-600"
+        >
+          Clear
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Toast Notification -->
+  <div
+    id="toast"
+    class="fixed bottom-5 right-5 flex items-center gap-2.5 px-4 py-3 bg-emerald-600 text-white text-sm font-medium rounded-xl shadow-xl transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none"
+  >
+    <span id="toastText">Copied to clipboard!</span>
+  </div>
+
+  <script>
+    const fields = [
+      { input: document.getElementById('nameInput'), error: document.getElementById('nameError'), label: 'Name' },
+      { input: document.getElementById('addressInput'), error: document.getElementById('addressError'), label: 'Address' },
+      { input: document.getElementById('phoneInput'), error: document.getElementById('phoneError'), label: 'Phone' },
+      { input: document.getElementById('complainInput'), error: document.getElementById('complainError'), label: 'Complain' }
+    ];
+
+    const previewBox = document.getElementById('previewBox');
+    const statusBadge = document.getElementById('statusBadge');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyBtnText = document.getElementById('copyBtnText');
+    const copyIcon = document.getElementById('copyIcon');
+    const checkIcon = document.getElementById('checkIcon');
+    const clearBtn = document.getElementById('clearBtn');
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toastText');
+
+    let resetTimer = null;
+
+    function areAllFieldsFilled() {
+      return fields.every(f => f.input.value.trim().length > 0);
+    }
+
+    function getFormattedText() {
+      return [
+        `Name: ${fields[0].input.value.trim()}`,
+        `Address: ${fields[1].input.value.trim()}`,
+        `Phone: ${fields[2].input.value.trim()}`,
+        `Complain: ${fields[3].input.value.trim()}`
+      ].join('\n');
+    }
+
+    function updatePreview() {
+      previewBox.textContent = getFormattedText();
+      if (areAllFieldsFilled()) {
+        statusBadge.textContent = 'Ready to Copy';
+        statusBadge.className = 'text-xs text-emerald-400 font-medium';
+        previewBox.classList.remove('select-none');
+        previewBox.classList.add('select-all');
+      } else {
+        statusBadge.textContent = 'Incomplete';
+        statusBadge.className = 'text-xs text-amber-400 font-medium';
+        previewBox.classList.remove('select-all');
+        previewBox.classList.add('select-none');
+      }
+    }
+
+    function setFieldError(field, hasError) {
+      if (hasError) {
+        field.input.classList.remove('border-slate-800', 'focus:border-indigo-500', 'focus:ring-indigo-500/20');
+        field.input.classList.add('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/20');
+        field.error.classList.remove('hidden');
+      } else {
+        field.input.classList.remove('border-rose-500', 'focus:border-rose-500', 'focus:ring-rose-500/20');
+        field.input.classList.add('border-slate-800', 'focus:border-indigo-500', 'focus:ring-indigo-500/20');
+        field.error.classList.add('hidden');
+      }
+    }
+
+    function validateAllFields() {
+      const missingLabels = [];
+      let firstInvalid = null;
+
+      fields.forEach(field => {
+        if (field.input.value.trim() === '') {
+          field.input.value = '';
+          setFieldError(field, true);
+          missingLabels.push(field.label);
+          if (!firstInvalid) firstInvalid = field.input;
+        } else {
+          setFieldError(field, false);
+        }
+      });
+
+      if (missingLabels.length > 0) {
+        firstInvalid.focus();
+        showToast(`Missing required fields: ${missingLabels.join(', ')}`, true);
+        return false;
+      }
+
+      return true;
+    }
+
+    function showToast(message, isError = false) {
+      toastText.textContent = message;
+      toast.classList.remove('bg-emerald-600', 'bg-rose-600', 'translate-y-20', 'opacity-0');
+      toast.classList.add(isError ? 'bg-rose-600' : 'bg-emerald-600', 'translate-y-0', 'opacity-100');
+
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    function showCopiedFeedback() {
+      copyBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500', 'active:bg-indigo-700');
+      copyBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+      copyIcon.classList.add('hidden');
+      checkIcon.classList.remove('hidden');
+      copyBtnText.textContent = 'Copied!';
+
+      showToast('Copied to clipboard!', false);
+
+      setTimeout(() => {
+        copyBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+        copyBtn.classList.add('bg-indigo-600', 'hover:bg-indigo-500', 'active:bg-indigo-700');
+        copyIcon.classList.remove('hidden');
+        checkIcon.classList.add('hidden');
+        copyBtnText.textContent = 'Copy';
+      }, 2000);
+    }
+
+    async function copyToClipboard() {
+      // Strictly block copying if any field is empty
+      if (!validateAllFields()) return;
+
+      const textToCopy = getFormattedText();
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        showCopiedFeedback();
+      } catch (err) {
+        const tempArea = document.createElement('textarea');
+        tempArea.value = textToCopy;
+        tempArea.style.position = 'fixed';
+        tempArea.style.opacity = '0';
+        document.body.appendChild(tempArea);
+        tempArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempArea);
+        showCopiedFeedback();
+      }
+    }
+
+    function clearForm() {
+      fields.forEach(field => {
+        field.input.value = '';
+        setFieldError(field, false);
+      });
+      updatePreview();
+      fields[0].input.focus();
+    }
+
+    fields.forEach(field => {
+      field.input.addEventListener('input', () => {
+        if (field.input.value.trim() !== '') {
+          setFieldError(field, false);
+        }
+        updatePreview();
+      });
+    });
+
+    // Also block manual copying from the preview box if any field is missing
+    previewBox.addEventListener('copy', (e) => {
+      if (!validateAllFields()) {
+        e.preventDefault();
+      }
+    });
+
+    copyBtn.addEventListener('click', copyToClipboard);
+    clearBtn.addEventListener('click', clearForm);
+
+    updatePreview();
+  </script>
+</body>
+</html>
