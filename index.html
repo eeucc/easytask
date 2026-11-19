@@ -201,9 +201,8 @@ Complain: </pre>
       if (areAllFieldsFilled()) {
         statusBadge.textContent = 'Ready to Copy';
         statusBadge.className = 'text-xs text-emerald-400 font-medium';
-
-
-
+        previewBox.classList.remove('select-none');
+        previewBox.classList.add('select-all');
         
       } else {
         statusBadge.textContent = 'Incomplete';
